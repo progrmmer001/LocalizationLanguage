@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment::head(~{::title})">
+    <meta charset="UTF-8">
+    <title>Logout Page</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 offset-2 mt-5">
+            <h1 class="text-center">Log out page</h1>
+            <form method="post">
+                <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
+                <div class="alert alert-danger">
+                    <h1>Chiqishga ishonchingiz komilmi</h1>
+                </div>
+                <button type="submit" class="btn btn-danger">Chiqish</button>
+                <a href="/index" class="btn btn-success">Qaytish</a>
+            </form>
+        </div>
+    </div>
+</div>
+<section th:replace="fragments :: js_links">
+</section>
+</body>
+</html>
