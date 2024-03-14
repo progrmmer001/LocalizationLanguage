@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#">Todo blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+        <!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+        <!--                <li>-->
+        <!--                    <a class="nav-link text-white" href="/api/blog/addBlogs">Add new favorite stories ➕</a>-->
+        <!--                </li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
+        <div>
+            <ul>
+                <li>
+                    <a class="nav-link text-white" href="/auth/login" sec:authorize="isAnonymous()" th:text="#{LogIn}"></a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div>
+
+                <ul>
+                    <li>
+                        <a class="nav-link text-white" href="/auth/sign" sec:authorize="isAnonymous()">SignIn</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <a class="nav-link text-white" href="/auth/logout" sec:authorize="isAuthenticated()">Log out</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <a class="nav-link text-white" sec:authorize="isAuthenticated()"
+                           th:text="${#authentication.principal}">Admin</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li>
+                        <a class="nav-link text-white" href="/auth/logout" sec:authorize="hasRole('ADMIN')">ADMIN</a>
+                    </li>
+                </ul>
+            </div>
+            <ul>
+                <li>
+                    <div class="container">
+                        <a class="navbar-brand" href="#">
+                            <img src="/static/img/img_1.png" alt="Bootstrap" width="30" height="24">
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div th:switch="${toDos}">
+    <h2 th:case="null">No todos yet!</h2>
+    <div th:case="*">
+        <h2>Todos</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>CreatedAt</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="toDo : ${toDos}">
+                <td th:text="${toDo.id}"></td>
+                <td th:text="${toDo.title}"></td>
+                <td th:text="${toDo.priority}"></td>
+                <td th:text="${toDo.createdAt}"></td>
+                <td><a th:href="@{/edit/{id}(id=${toDo.id})}">Edit</a></td>
+                <td><a th:href="@{/delete/{id}(id=${toDo.id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a href="/begin">Add a new toDo</a></p>
+    <p><a href="/auth/logout">Quit</a></p>
+    <p><a sec:authorize="hasRole('ADMIN')" href="/auth/allUsers">Admin page</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+</html>

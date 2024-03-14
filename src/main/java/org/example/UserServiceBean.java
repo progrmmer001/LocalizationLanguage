@@ -19,7 +19,7 @@ public class UserServiceBean implements UserDetails {
     private final RoleService roleService;
     private final PermissionService permissionService;
     @Getter
-    private final AuthUser authUser;
+    private AuthUser authUser;
 
     public UserServiceBean(RoleService roleService, PermissionService permissionService, AuthUser authUser) {
         this.roleService = roleService;
@@ -31,12 +31,14 @@ public class UserServiceBean implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         try {
-            List<Role> roles = roleService.roles(authUser.getId());
-            for (Role role : roles) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
-                List<Permission> permissions = permissionService.permissions(role.getId());
-                for (Permission permission : permissions) {
-                    authorities.add(new SimpleGrantedAuthority(permission.getPermissionName()));
+            if (authUser != null) {
+                List<Role> roles = roleService.roles(authUser.getId());
+                for (Role role : roles) {
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+                    List<Permission> permissions = permissionService.permissions(role.getId());
+                    for (Permission permission : permissions) {
+                        authorities.add(new SimpleGrantedAuthority(permission.getPermissionName()));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -47,11 +49,13 @@ public class UserServiceBean implements UserDetails {
 
     @Override
     public String getPassword() {
+        if (authUser==null)return null;
         return authUser.getPassword();
     }
 
     @Override
     public String getUsername() {
+        if (authUser==null)return null;
         return authUser.getUsername();
     }
 
@@ -62,6 +66,7 @@ public class UserServiceBean implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
+        if (authUser==null)return true;
         return !authUser.getIsBlocked();
     }
 

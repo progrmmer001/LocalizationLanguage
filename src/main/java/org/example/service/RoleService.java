@@ -5,6 +5,7 @@ import org.example.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,7 +15,9 @@ public class RoleService {
 
     public List<Role> roles(Long user_id) throws Exception {
         List<Role> role = repository.getRole(user_id);
-        if (role.isEmpty()) throw new NullPointerException("No found roles !");
-        else return role;
+        if (role.isEmpty()) {
+            System.out.println("No found roles !");
+            return new ArrayList<>();
+        } else return role;
     }
 }

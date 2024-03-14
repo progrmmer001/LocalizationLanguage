@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add-toDo</title>
+</head>
+<body>
+<form action="#" th:action="@{/addTodo}" th:object="${toDo}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.getToken()}">
+    <label for="name">Id</label>
+    <input type="number" th:field="*{id}" id="name" placeholder="ID">
+    <!--    <span th:if="${#fields.hasErrors('name')}" th:errors="*{id}"></span>-->
+    <label for="title">title</label>
+    <input type="text" th:field="*{title}" id="title" placeholder="TITLE">
+    <!--    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>-->
+    <label for="priority">priority</label>
+    <input type="text" th:field="*{priority}" id="priority" placeholder="PRIORITY">
+    <!--    <span th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></span>-->
+    <label for="createdAt">createdAt</label>
+    <input type="datetime-local" th:field="*{createdAt}" id="createdAt" placeholder="CREATEDAT">
+    <!--    <span th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></span>-->
+    <input type="submit" value="Add toDo">
+</form>
+</body>
+</html>
